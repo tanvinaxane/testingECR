@@ -41,7 +41,6 @@ jobs:
         ECR_REPOSITORY: testingdockerimage
         IMAGE_TAG: ${{ github.sha }}
         AWS_REGION: us-east-1                   
-        ECR_REPOSITORY: testingdockerimage                       
         ECS_CLUSTER: metronetpoc                 
         ECS_TASK_DEFINITION: metronetpocECSapp:1                          
         CONTAINER_NAME: metronetpocec2container     
@@ -50,17 +49,17 @@ jobs:
         docker push -a $ECR_REGISTRY/$ECR_REPOSITORY 
         echo "auto deploy from ECR to ECS"
 
-- name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
-        with:
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
+      with:
           task-definition: metronetpocECSapp:1
           container-name: metronetpocec2container
           image: ${{ steps.build-image.outputs.image }}
 
-   - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
-        with:
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+      with:
           task-definition: metronetpocECSapp:1
           cluster: metronetpoc
           wait-for-service-stability: true
