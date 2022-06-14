@@ -10,13 +10,13 @@ spec:
     repoURL: https://github.com/tanvinaxane/testingECR.git
     targetRevision: HEAD
     path: "."
-  destination: 
+  destination:
     server: https://kubernetes.default.svc
     namespace: testnsargocd
 
   syncPolicy:
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
 
     automated:
       selfHeal: true
