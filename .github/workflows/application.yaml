@@ -1,0 +1,36 @@
+name: ArgoCD sync workflow
+
+on: [push, pull_request]
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+    name: Sync ArgoCD Application with Kubernetes
+    uses: omegion/argocd-actions@v1
+    with:
+      address: "http://aad18b92a45fb46d5b54b38315c44f2a-2097128699.us-east-1.elb.amazonaws.com"
+      token: ${{ secrets.ARGOCD_TOKEN }}
+      action: sync
+      appName: "flask-test-app"
+   
+spec:
+    project: default
+    name: metronetpocargocd
+    namespace: multinsfeature1
+
+source:
+  repoURL: https://github.com/tanvinaxane/testingECR.git
+  targetRevision: HEAD
+  path: "."
+
+destination:
+  server: https://kubernetes.default.svc
+  namespace: testnsargocd
+
+syncPolicy:
+  syncOptions:
+    - CreateNamespace=true
+
+automated:
+  selfHeal: true
+  prune: true
