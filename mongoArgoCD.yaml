@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongoArgoCD
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongoArgoCD
+      tier: backend
+
+  template:
+    metadata:
+      labels:
+        app: mongoArgoCD
+        tier: backend
+
+    spec:
+      containers:
+        - name: mongoArgoCD
+          image: mongoArgoCD
+          ports:
+            - containerPort: 27017
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongoArgoCD
+spec:
+  selector:
+    app: mongoArgoCD
+    tier: backend
+
+  ports:
+    - port: 27017
+      targetPort: 27017
+  type: ClusterIP

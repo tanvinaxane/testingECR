@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: knoteArgoCD
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: knoteArgoCD
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: knoteArgoCD
+        tier: frontend
+    spec:
+      containers:
+        - name: app
+          image: learnitguide/knotejs:1.0
+          ports:
+            - containerPort: 3002
+          env:
+            - name: MONGO_URL
+              value: mongodb://mongo:27017/dev
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: knoteArgoCD
+spec:
+  selector:
+    app: knoteArgoCD
+    tier: frontend
+
+  ports:
+    - port: 8090
+      targetPort: 3002
+      nodePort: 31100
+  type: LoadBalancer
