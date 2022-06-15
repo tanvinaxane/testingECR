@@ -2,24 +2,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongoArgoCD
+  name: mongoargocd
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongoArgoCD
+      app: mongoargocd
       tier: backend
 
   template:
     metadata:
       labels:
-        app: mongoArgoCD
+        app: mongoargocd
         tier: backend
 
     spec:
       containers:
-        - name: mongoArgoCD
-          image: mongoArgoCD
+        - name: mongoargocd
+          image: mongoargocd
           ports:
             - containerPort: 27017
 
@@ -27,10 +27,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongoArgoCD
+  name: mongoargocd
 spec:
   selector:
-    app: mongoArgoCD
+    app: mongoargocd
     tier: backend
 
   ports:
