@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: mongoargocd
-          image: mongoargocd
+          image: mongo
           ports:
             - containerPort: 27017
 
