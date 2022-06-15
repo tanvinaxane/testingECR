@@ -1,0 +1,83 @@
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com/testingdockerimage 
+  ECR_REPOSITORY: testingdockerimage
+  
+
+name: APP DEPLOYMENT CI/CD IN KUBERNETES USING ARGOCD
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-southeast-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: testingdockerimage
+        AWS_REGION: us-east-1
+      run: |
+        SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
+        ls -la
+        echo "Cat .env.local"
+        cat .env.local
+        echo "Build a docker container and push it to ECR" 
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA .
+        echo "Pushing image to ECR..."
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA"
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Setup Kustomize
+      uses: imranismail/setup-kustomize@v1
+      with:
+        kustomize-version: "3.8.8"
+
+    - name: Update Kubernetes resources
+      run: |
+        cd ~/k8s-eks-manifest
+        git pull
+        git config --global user.email ${GITHUB_EMAIL}
+        git config --global user.name ${GITHUB_USERNAME}
+        git checkout main
+
+        echo "Update newimage with kustomize"
+        SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
+        cd kustomize/demoapp1
+        kustomize edit set image $ECR_REGISTRY/$ECR_REPOSITORY:main-$SHORT_SHA
+        cat kustomization.yaml
+        git commit -am "[${{ github.repository }}] $GITHUB_ACTOR - ${{ github.event.head_commit.message }}"
+        git push -u origin main 
+
+    - name: Sync ArgoCD App
+      run: |
+        argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
