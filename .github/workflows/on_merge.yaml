@@ -1,0 +1,65 @@
+on:
+  pull_request:
+    types:
+      - closed
+
+env:
+  ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com/testingdockerimage 
+  ECR_REPOSITORY: testingdockerimage
+
+name: AUTO DELETION OF PODS ON MERGE 
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-southeast-1
+
+on: 
+  workflow_dispatch:
+    inputs:
+      podname:
+        description: 'Define Pod Name'
+        required: true
+        podname: 'knote-db5699ccb-dmrr7'
+      environment:
+        description: 'Define env name'     
+        required: true
+        default: 'prod'
+      branch:
+        description: 'Define branch name'     
+        required: true
+        default: 'main'
+
+jobs:
+  printInputs:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Env: ${{ github.event.inputs.environment }}" 
+        echo "Branch: ${{ github.event.inputs.branch }}"
+        echo "PodName: ${{ github.event.inputs.podname }}"
+        
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v2.0
+      with:
+      version: '1.24.1' # default is latest stable, kubectl installed
+      id: install
+     
+    - name: Terminate pods post merge
+      run:
+       # <dynamically make replicas = 0>
+        kubectl apply -f knote-argocd.yaml -n multinsfeature1
+        kubectl delete pod knote-db5699ccb-dmrr7
+        
+        
+        
