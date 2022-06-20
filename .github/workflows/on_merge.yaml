@@ -40,10 +40,7 @@ jobs:
         kubectl scale deployment mongoargocd --replicas=0
         kubectl delete deployment mongoargocd --namespace=argocddemonew
         
-    - name: Syncing changes to ArgoCD
-      run: |
-        argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
-        echo "testing sync1"
+    
         
         
         
