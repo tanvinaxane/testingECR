@@ -26,6 +26,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_TOKEN}} 
         aws-region: us-east-1
         
     - name: Install kubectl
@@ -37,8 +38,8 @@ jobs:
     - name: Terminate pods post merge
       run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
-        kubectl scale deployment mongoargocd --replicas=0
         kubectl delete deployment mongoargocd --namespace=argocddemonew
+        
         
     
         
