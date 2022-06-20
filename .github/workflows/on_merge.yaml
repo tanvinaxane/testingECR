@@ -34,6 +34,10 @@ jobs:
         version: '1.24.1' # default is latest stable, kubectl installed
         id: install
      
+    - name: Terminate pods post on-merge
+      run:
+        #dynamically make replicas = 0
+
     - name: Terminate pods post merge
       run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
