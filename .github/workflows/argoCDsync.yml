@@ -42,7 +42,7 @@ jobs:
       run: |
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
         ls -la
-        echo "Cat .env.local"
+        echo "cat .env.local"
         cat .env.local
         echo "Build a docker container and push it to ECR" 
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA .
