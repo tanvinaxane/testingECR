@@ -35,6 +35,14 @@ jobs:
         version: '1.24.1' # default is latest stable, kubectl installed
         id: install
 
+    - name: Sync with ArgoCD 
+      uses: safe2008/argocd-app-actions@main
+      with:
+        address: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
+        token: ${{ secrets.ARGOCD_TOKEN }}
+        insecure: false
+        appName: "argocddemonew2"
+          
     - name: Terminate pods post merge
       run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
