@@ -1,0 +1,45 @@
+on:
+  pull_request:
+    types:
+      - closed
+    branches: 
+      - main
+      - demo
+    
+env:
+  ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com/testingdockerimage 
+  ECR_REPOSITORY: testingdockerimage
+
+name: AUTO DELETION OF PODS ON MERGE 
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v2.0
+      with:
+        version: '1.24.1' # default is latest stable, kubectl installed
+        id: install
+     
+    - name: Terminate pods post merge
+      run:
+        #dynamically make replicas = 0
+        kubectl scale deployment knoteargocd --replicas=0
+        kubectl delete deployment knoteargocd --namespace=argocddemonew
+        
+        
+        
+        
