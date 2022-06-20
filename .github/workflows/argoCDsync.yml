@@ -42,14 +42,11 @@ jobs:
       run: |
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
         ls -la
-        echo "Cat .env.local"
-        cat .env.local
         echo "Build a docker container and push it to ECR" 
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA .
         echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA"
-
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -71,7 +68,6 @@ jobs:
         git config --global user.email ${GITHUB_EMAIL}
         git config --global user.name ${GITHUB_USERNAME}
         git checkout main
-
         echo "Update newimage with kustomize"
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
         cd kustomize/demoapp1
@@ -79,7 +75,6 @@ jobs:
         cat kustomization.yaml
         git commit -am "[${{ github.repository }}] $GITHUB_ACTOR - ${{ github.event.head_commit.message }}"
         git push -u origin main 
-
     - name: Sync ArgoCD App
       run: |
         argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
