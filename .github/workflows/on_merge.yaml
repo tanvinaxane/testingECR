@@ -26,7 +26,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-southeast-1
+        aws-region: us-east-1
         
     - name: Install kubectl
       uses: azure/setup-kubectl@v2.0
@@ -36,11 +36,10 @@ jobs:
      
     - name: Terminate pods post merge
       run:
-       # <dynamically make replicas = 0>
+        #dynamically make replicas = 0
         kubectl scale deployment knoteargocd --replicas=0
-        kubectl delete deployment knoteargocd --namespace=multinsfeature1
-        kubectl apply -f knoteargocd.yaml -n multinsfeature1
-       # kubectl delete pod knote-db5699ccb-dmrr7
+        kubectl delete deployment knoteargocd --namespace=argocddemonew
+        
         
         
         
