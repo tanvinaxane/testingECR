@@ -38,7 +38,9 @@ jobs:
     - name: Terminate pods post merge
       run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
-        kubectl delete deployment mongoargocd --namespace=argocddemonew
+        argocd app delete argocddemonew2
+  #kubectl delete deployment mongoargocd --namespace=argocddemonew2
+        
         
         
     
