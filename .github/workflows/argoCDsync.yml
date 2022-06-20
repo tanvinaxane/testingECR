@@ -47,6 +47,7 @@ jobs:
         echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA"
+        
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -75,7 +76,8 @@ jobs:
         cat kustomization.yaml
         git commit -am "[${{ github.repository }}] $GITHUB_ACTOR - ${{ github.event.head_commit.message }}"
         git push -u origin main 
+        
     - name: Sync ArgoCD App
       run: |
         argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
-        echo "testing sync"
+        echo "testing sync1"
