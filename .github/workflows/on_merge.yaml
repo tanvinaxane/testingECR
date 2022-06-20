@@ -33,16 +33,12 @@ jobs:
       with:
         version: '1.24.1' # default is latest stable, kubectl installed
         id: install
-     
-    - name: Terminate pods post on-merge
-      run:
-        #dynamically make replicas = 0
 
     - name: Terminate pods post merge
       run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
-        kubectl scale deployment knoteargocd --replicas=0
-        kubectl delete deployment knoteargocd --namespace=argocddemonew
+        kubectl scale deployment mongoargocd --replicas=0
+        kubectl delete deployment mongoargocd --namespace=argocddemonew
         
     - name: Syncing changes to ArgoCD
       run: |
