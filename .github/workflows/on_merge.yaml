@@ -35,10 +35,15 @@ jobs:
         id: install
      
     - name: Terminate pods post merge
-      run:
-        #dynamically make replicas = 0
+      run: |
+        aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
         kubectl scale deployment knoteargocd --replicas=0
         kubectl delete deployment knoteargocd --namespace=argocddemonew
+        
+    - name: Syncing changes to ArgoCD
+      run: |
+        argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
+        echo "testing sync"
         
         
         
