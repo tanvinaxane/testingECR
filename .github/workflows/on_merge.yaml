@@ -27,7 +27,7 @@ jobs:
       with:
         cluster: metronetpocmulticluster # name of your EKS cluster
         region: us-east-1 # region of your EKS cluster
-        namespace: argocddemonew2# optional namespace context, default value is 'default'
+        namespace: argocddemonew2 # optional namespace context, default value is 'default'
   
     - name: Connect to your cluster
       run: |
