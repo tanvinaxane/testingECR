@@ -48,7 +48,7 @@ jobs:
     - name: Terminate pods post merge
       run: |
         argocd app delete argocddemonew2
-        echo "App deleted."
+        echo "App deleted"
   #kubectl delete deployment mongoargocd --namespace=argocddemonew2
         
         
