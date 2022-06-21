@@ -28,19 +28,18 @@ jobs:
         version: 'v1.21.3'
       id: install
   
+    - name: Install ArgoCD 
+      uses: clowdhaus/argo-cd-action/@main
+      with:
+        version: 2.3.4
+        command: version
+        options: --client
+        
     - name: Logging into ArgoCD
       run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
         argocd login  a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com --username alice --password tansusham
         echo "Logged in successfully!"
-        
-    - name: Sync with ArgoCD 
-      uses: safe2008/argocd-app-actions@main
-      with:
-        address: http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com
-        token: ${{ secrets.ARGOCD_TOKEN }}
-        insecure: true
-        appName: argocddemonew2
           
     - name: Terminate pods post merge
       run: |
