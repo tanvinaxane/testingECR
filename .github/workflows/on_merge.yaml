@@ -32,7 +32,7 @@ jobs:
     - name: Connect to your cluster
       run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
-        kubectl delete -n argocddemonew2
+        kubectl delete namespace argocddemonew2
         
     - name: Install ArgoCD 
       uses: clowdhaus/argo-cd-action/@main
