@@ -9,8 +9,9 @@ env:
 name: AUTO DELETION OF PODS ON MERGE 
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
+  push:
+  #if_merged:
+   # if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
 
