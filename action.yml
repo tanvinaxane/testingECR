@@ -1,0 +1,67 @@
+name: gnat-service/argocd
+author: leaf4monkey
+description: 'Setup argocd'
+branding:
+  icon: 'aperture'
+  color: 'green'
+inputs:
+  grpcWeb:
+    description: 'Use "grpc-web" option when login'
+    required: false
+  config:
+    description: 'Specify a config file ($HOME/.argocd/config by default)'
+    required: false
+  additionalLoginOptions:
+    description: 'Additional login options'
+    required: false
+    default: ''
+  server:
+    description: 'The argocd server to login with'
+    required: true
+  username:
+    description: 'A argocd username'
+    required: true
+  password:
+    description: 'Password for the assigned argocd username'
+    required: true
+  subcommand:
+    description: 'The very first command after argocd cli setup'
+    required: false
+  subcommandArgs:
+    description: 'The exec args for first command after argocd cli setup'
+    required: false
+    default: ''
+  dryRun:
+    description: 'Stop to run the argocd commands'
+    required: false
+    default: ''
+
+outputs:
+  argocd:
+    description: "Argocd path"
+    value: ${{ steps.setup-argocd.outputs.argocd }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup ArgoCD Cli
+      id: setup-argocd
+      shell: bash
+      run: |
+        curl -sSL -o /tmp/argocd https://github.com/argoproj/argo-cd/releases/download/v1.7.14/argocd-linux-amd64
+        chmod +x /tmp/argocd
+        echo "::set-output name=argocd::/tmp/argocd"
+        OPTIONS=""
+        if [[ "${{ inputs.grpcWeb }}" == "true" ]]; then
+          OPTIONS="--grpc-web"
+        fi
+        if [[ -n "${{ inputs.config }}"  ]]; then
+          OPTIONS="$OPTIONS --config ${{ inputs.config }}"
+        fi
+        if [[ "${{ inputs.dryRun }}" == "true" ]]; then
+          OPTIONS="$OPTIONS --help"
+        fi
+        /tmp/argocd login '${{ inputs.server }}' --username '${{ inputs.username }}' --password '${{ inputs.password }}' $OPTIONS
+        if [[ -n "${{ inputs.subcommand }}" ]]; then
+          /tmp/argocd ${{ inputs.subcommand }} ${{ inputs.subcommandArgs }} $OPTIONS
+        fi
