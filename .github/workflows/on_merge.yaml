@@ -26,7 +26,7 @@ jobs:
       uses: azure/setup-kubectl@v2.0
       with:
         version: '1.20.15' # default is latest stable, kubectl installed
-        id: install
+      id: install
 
     - name: Sync with ArgoCD 
       uses: safe2008/argocd-app-actions@main
