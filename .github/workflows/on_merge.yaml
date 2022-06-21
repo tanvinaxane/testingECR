@@ -38,9 +38,9 @@ jobs:
     - name: Sync ArgoCD App
       uses: inarix/ga-argocd-action@v1
       with:
-        argocdToken: ${{secrets.ARGOCD_TOKEN}}
+        argocdToken: argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
         argocdEndpoint: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
-        insecure: ${{ false }}
+        #insecure: ${{ false }}
         applicationNamespace: "argocddemonew2"
         destClusterName: ${{secrets.CLUSTER_NAME}}
         applicationName: "argocddemonew2"
