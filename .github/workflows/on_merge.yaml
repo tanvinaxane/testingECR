@@ -34,8 +34,6 @@ jobs:
         version: 2.3.4
         command: version
         options: --client
-        address: http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com 
-        appName: argocddemonew2
           
     - name: Sync ArgoCD App
       run: |
