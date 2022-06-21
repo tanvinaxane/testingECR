@@ -28,6 +28,10 @@ jobs:
         version: 'v1.21.3'
       id: install
   
+    - name: Connect to your cluster
+      run:
+        aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
+        
     - name: Install ArgoCD 
       uses: clowdhaus/argo-cd-action/@main
       with:
