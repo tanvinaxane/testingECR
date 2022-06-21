@@ -34,18 +34,16 @@ jobs:
         version: 2.3.4
         command: version
         options: --client
-          
-    - name: Sync ArgoCD App
-      uses: inarix/ga-argocd-action@v1
+        
+    - name: ArgoCD App Info
+      uses: ./ # Uses an action in the root directory
+      id: argocddemonew2
       with:
-        argocdEndpoint: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
-        argocdToken: argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
-        #insecure: ${{ false }}
-        applicationNamespace: "argocddemonew2"
-        destClusterName: ${{secrets.CLUSTER_NAME}}
-        applicationName: "argocddemonew2"
-        actionName: "delete"
-        applicationParams: "image.debug=true;replicaCount=0;nodeSelector.name=multiclusternode"
+        grpcWeb: true
+        config: "/tmp/.argocd/config"
+        server: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
+        username: "${{ secrets.ARGOCD_USERNAME }}"
+        password: "${{ secrets.ARGOCD_PASSWORD }}"
       
     - name: Terminate pods post merge
       run: |
