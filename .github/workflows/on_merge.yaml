@@ -22,15 +22,17 @@ jobs:
         aws-session-token: ${{ secrets.AWS_TOKEN}} 
         aws-region: us-east-1
         
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v1
+    - name: Setup EKS Kubectl
+      uses: zachguo/setup-eks-kubectl@v1
       with:
-        version: 'v1.21.3'
-      id: install
+        cluster: metronetpocmulticluster # name of your EKS cluster
+        region: us-east-1 # region of your EKS cluster
+        namespace: argocddemonew2# optional namespace context, default value is 'default'
   
     - name: Connect to your cluster
-      run:
+      run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
+        kubectl delete app argocddemonew2
         
     - name: Install ArgoCD 
       uses: clowdhaus/argo-cd-action/@main
@@ -51,10 +53,10 @@ jobs:
           appName: "argocddemonew2"
           imageTag: "dev"
       
-    - name: Terminate App Post Merge
-      run: |
-        argocd app delete argocddemonew2
-        echo "App deleted"
+    #- name: Terminate App Post Merge
+     # run: |
+      #  argocd app delete argocddemonew2
+       # echo "App deleted"
   #kubectl delete deployment mongoargocd --namespace=argocddemonew2
         
         
