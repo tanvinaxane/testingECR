@@ -1,4 +1,4 @@
-name: AUTO DELETION OF PODS ON MERGE
+name: AUTO DELETION OF APPS ON MERGE
 
 on:
   push: 
@@ -35,17 +35,15 @@ jobs:
         command: version
         options: --client
         
-    - name: ArgoCD App Info
-      uses: ./ # Uses an action in the root directory
-      id: argocddemonew2
+    - name: ArgoCD App Deletion Info
+      uses: omegion/argocd-actions@v1 
       with:
-        grpcWeb: true
-        config: "/tmp/.argocd/config"
-        server: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
-        username: "${{ secrets.ARGOCD_USERNAME }}"
-        password: "${{ secrets.ARGOCD_PASSWORD }}"
+          address: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
+          token: ${{ secrets.ARGOCD_TOKEN }}
+          action: delete
+          appName: "argocddemonew2"
       
-    - name: Terminate pods post merge
+    - name: Terminate App Post Merge
       run: |
         argocd app delete argocddemonew2
         echo "App deleted"
