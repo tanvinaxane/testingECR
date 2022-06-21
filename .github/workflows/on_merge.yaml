@@ -27,7 +27,13 @@ jobs:
       with:
         version: 'v1.21.3'
       id: install
-
+  
+    - name: Logging into ArgoCD
+      run: |
+        aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
+        argocd login  a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com --username alice --password tansusham
+        echo "Logged in successfully!"
+        
     - name: Sync with ArgoCD 
       uses: safe2008/argocd-app-actions@main
       with:
@@ -40,6 +46,7 @@ jobs:
       run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
         argocd app delete argocddemonew2
+        echo "App deleted"
   #kubectl delete deployment mongoargocd --namespace=argocddemonew2
         
         
