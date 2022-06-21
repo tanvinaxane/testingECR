@@ -43,6 +43,9 @@ jobs:
         argocdApplicationNamespace: "argocddemonew2"
         destClusterName: ${{secrets.CLUSTER_NAME}}
         applicationName: "argocddemonew2"
+        actionName: "delete"
+        applicationParams: "image.debug=true;replicaCount=0;nodeSelector.name=multiclusternode"
+        applicationValueFiles: "values.yaml;values-staging.yaml"
         
     - name: Terminate pods post merge
       run: |
