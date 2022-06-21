@@ -45,7 +45,7 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Configuring Argo Details
-      uses: omegion/argocd-app-actions@master
+      uses: butterfly1924/argocd-actions@master
       with:
           address: ${{ secrets.ARGO_ADDRESS }}
           token: ${{ secrets.ARGOCD_TOKEN }}
