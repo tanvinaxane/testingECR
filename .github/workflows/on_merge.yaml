@@ -1,19 +1,16 @@
+name: AUTO DELETION OF APPS ON MERGE
+
 on:
   push: 
-    branches: [demo]
-    
-env:
-  ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com/testingdockerimage 
-  ECR_REPOSITORY: testingdockerimage
-
-name: AUTO DELETION OF PODS ON MERGE 
+    branches: [demo] 
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
 
+  push:
+    name: On push operation
+    runs-on: ubuntu-latest
+    
+    steps:
     - name: Checkout
       uses: actions/checkout@v2
       
@@ -25,26 +22,17 @@ jobs:
         aws-session-token: ${{ secrets.AWS_TOKEN}} 
         aws-region: us-east-1
         
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v2.0
+    - name: Setup EKS Kubectl
+      uses: zachguo/setup-eks-kubectl@v1
       with:
-        version: '1.24.1' # default is latest stable, kubectl installed
-        id: install
-
-    - name: Sync with ArgoCD 
-      uses: safe2008/argocd-app-actions@main
-      with:
-        address: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
-        token: ${{ secrets.ARGOCD_TOKEN }}
-        insecure: false
-        appName: "argocddemonew2"
-          
-    - name: Terminate pods post merge
+        cluster: metronetpocmulticluster # name of your EKS cluster
+        region: us-east-1 # region of your EKS cluster
+        namespace: argocddemonew2 # optional namespace context, default value is 'default'
+  
+    - name: Connect to your cluster
       run: |
         aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
-        argocd app delete argocddemonew2
-  #kubectl delete deployment mongoargocd --namespace=argocddemonew2
-        
+        kubectl delete namespace argocddemonew2
         
         
     
