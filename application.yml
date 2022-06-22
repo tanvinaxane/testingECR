@@ -10,9 +10,9 @@ metadata:
       appName: "argocddemonew2"
    
 spec:
-    project: default
-    name: metronetpocargocd
-    namespace: multinsfeature1
+    project: automationargocd
+    name: argocddemonew2
+    namespace: argocddemonew2
 
 source:
   repoURL: https://github.com/tanvinaxane/testingECR.git
@@ -20,8 +20,8 @@ source:
   path: "."
 
 destination:
-  server: https://C7670FF6497552BFBC7284EBD87B1B2F.gr7.us-east-1.eks.amazonaws.com
-  namespace: testdevenv
+  server: https://9AF7702E15AF6E83BCB81D82DCD1C479.gr7.us-east-1.eks.amazonaws.com
+  namespace: argocddemonew2
 
 syncPolicy:
     syncOptions:
