@@ -25,23 +25,20 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-session-token: ${{ secrets.AWS_TOKEN}}
         aws-region: us-east-1
+    
+    - name: Create ECR repo if not not exists
+      id: ecr-repo
+      uses: 2iq/aws-ecr-create-repository@v1
+      with:
+        ecr-name: $NEW_ECR_REPO
+        public: true
 
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
       
-    - name: Check if ECR repo exists 
-      if: "!contains(NEW_ECR_REPO, '$ECR_REGISTRY')"
-      run:
-        echo "Since repo doesn't exist in ECR, Creating new repo"
-     
-    - name: Create new repo in ECR
-      uses: int128/create-ecr-repository-action@v1
-      with:
-        repository: $NEW_ECR_REPO
-        public: true
-
-
+    
+    
   
 
   
