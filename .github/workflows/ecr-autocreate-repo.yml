@@ -5,8 +5,8 @@ on:
 env:
   ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com 
   ECR_REPOSITORY: testingdockerimage
+  NEW_ECR_REPO: newecrrepo1
   
-
 name: AUTO CREATE ECR REPO IF NOT EXISTS
 
 jobs:
@@ -30,8 +30,10 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
       
+      
     - name: Check for ECR Repo, if exists
+      if: "!contains($NEW_ECR_REPO, 'http://244740641779.dkr.ecr.us-east-1.amazonaws.com')"
       uses: int128/create-ecr-repository-action@v1
       with:
-        repository: 'newecrrepo'
+        repository: $NEW_ECR_REPO
         public: true
