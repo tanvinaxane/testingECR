@@ -32,6 +32,6 @@ jobs:
       
     - name: Check for ECR Repo, if exists
       uses: int128/create-ecr-repository-action@v1
-        with:
-          repository: newECRrepo
-          public: true
+      with:
+        repository: newECRrepo
+        public: true
