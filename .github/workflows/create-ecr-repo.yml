@@ -33,7 +33,7 @@ jobs:
     - name: Check if ECR repo exists
       if: env.$NEW_ECR_REPO exists in ECR_REGISTRY == false
       run:
-        echo "Since repo doesn't exist in ECR, Creating new repo"
+        echo "Since repo doesn't exist in ECR, Creating new repo."
         
     - name: Create new repo in ECR
       uses: int128/create-ecr-repository-action@v1
