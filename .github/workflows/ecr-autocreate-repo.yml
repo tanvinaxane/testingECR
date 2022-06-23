@@ -24,16 +24,25 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-session-token: ${{ secrets.AWS_TOKEN}}
-        aws-region: ap-southeast-1
+        aws-region: us-east-1
 
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
       
+    - name: Check if ECR repo exists
+      if: "!contains('$NEW_ECR_REPO', 'http://244740641779.dkr.ecr.us-east-1.amazonaws.com')"
+      run:
+        echo "Since repo doesn't exist in ECR, Creating new repo"
       
-    - name: Check for ECR Repo, if exists
-      if: "!contains($NEW_ECR_REPO, 'http://244740641779.dkr.ecr.us-east-1.amazonaws.com')"
+    - name: Create new repo in ECR
       uses: int128/create-ecr-repository-action@v1
       with:
-        repository: $NEW_ECR_REPO
+        repository: '$NEW_ECR_REPO'
         public: true
+        
+    
+     
+ 
+      
+        
