@@ -38,7 +38,7 @@ jobs:
     - name: Create new repo in ECR
       uses: int128/create-ecr-repository-action@v1
       with:
-        repositoryName: '$NEW_ECR_REPO'
+        repository: $NEW_ECR_REPO
         public: true
         
     
