@@ -2,12 +2,12 @@ on:
     push:
       branches: [ ecrautorepo ]
     workflow_dispatch:
-  env:
+env:
     ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com
     ECR_REPOSITORY: testingdockerimage
     NEW_ECR_REPO: newecrrepo1
-  name: AUTO CREATE ECR REPO IF NOT EXISTS
-  jobs:
+name: AUTO CREATE ECR REPO IF NOT EXISTS
+jobs:
     build:
       name: Build
       runs-on: ubuntu-latest
