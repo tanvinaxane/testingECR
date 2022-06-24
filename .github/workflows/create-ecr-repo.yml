@@ -36,5 +36,5 @@ jobs:
     - name: Create new repo in ECR
       uses: int128/create-ecr-repository-action@v1
       with:
-        repository: ${{ needs.build.outputs.output1 }}
+        repository: ${{ build.outputs.output1 }}
         public: true
