@@ -1,18 +1,13 @@
-on:
-    
-  
+name: ecr repocreate
+on: 
+    push:
+      branches: [ ecrautorepo ]
     workflow_dispatch:
-      inputs:
-        NEW_ECR_REPO:
-          description: The repository name
-          required: true
-          default: newecrrepo1
-          type: string
 env:
     ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com
-    ECR_REPOSITORY: testingdockerimage
+
     NEW_ECR_REPO: ${{ inputs.NEW_ECR_REPO }}
-name: AUTO CREATE ECR REPO IF NOT EXISTS
+#AUTO CREATE ECR REPO IF NOT EXISTS
 jobs:
     build:
       name: Build
