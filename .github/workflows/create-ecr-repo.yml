@@ -1,6 +1,7 @@
 on:
   push:
     branches: [ ecrautorepo ]
+  workflow_dispatch:
 
 env:
   ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com 
