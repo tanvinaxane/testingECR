@@ -7,4 +7,5 @@ if [[ ! "${status}" -eq 0 ]]; then
    echo "Repository not exist"
 else 
     echo "repository $1 already exists "
+    exit 0
 fi
