@@ -34,7 +34,7 @@ jobs:
     - id: step1
       run: echo "::set-output name=NEW_ECR_REPO::${{ env.NEW_ECR_REPO }}"
   create-repo:
-    uses: int128/create-ecr-repository-action@v1
+    uses: actions/create-ecr-repository-action@v1
     with:
       repository: ${{ needs.build.outputs.output1 }}
       public: true
