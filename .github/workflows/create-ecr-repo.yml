@@ -35,7 +35,7 @@ jobs:
       run: | 
           cd ./scripts/
           chmod 777 validate.sh
-          ./validate.sh 
+          ./validate.sh "${{ env.NEW_ECR_REPO }}"
         
     #- name: Create new repo in ECR
      # uses: int128/create-ecr-repository-action@v1
