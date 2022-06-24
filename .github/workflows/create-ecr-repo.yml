@@ -35,7 +35,7 @@ jobs:
       run: | 
           cd ./scripts/
           chmod 777 validate.sh
-          ./scripts/validate.sh 
+          ./validate.sh 
         
     #- name: Create new repo in ECR
      # uses: int128/create-ecr-repository-action@v1
