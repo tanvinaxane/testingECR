@@ -1,6 +1,6 @@
 on:
-    push:
-      branches: [ ecrautorepo ]
+    
+  
     workflow_dispatch:
       inputs:
         NEW_ECR_REPO:
