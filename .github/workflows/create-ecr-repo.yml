@@ -31,7 +31,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
     
     - name: Check if ECR repo exists
-      if: "!contains($NEW_ECR_REPO, '$ECR_REGISTRY')"
+      if: "!contains('$NEW_ECR_REPO', '$ECR_REGISTRY')"
       run:
         echo "Since repo doesn't exist in ECR, Creating new repo."
         
