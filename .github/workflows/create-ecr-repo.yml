@@ -32,7 +32,10 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
     
     - name: Validating and Creating repository
-      run: ./scripts/validate.sh 
+      run: | 
+          cd ./scripts/
+          chmod 777 validate.sh
+          ./scripts/validate.sh 
         
     #- name: Create new repo in ECR
      # uses: int128/create-ecr-repository-action@v1
