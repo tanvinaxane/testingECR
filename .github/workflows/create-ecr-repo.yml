@@ -33,8 +33,8 @@ jobs:
           ./validate.sh "${{ env.NEW_ECR_REPO }}"
     - id: step1
       run: echo "::set-output name=NEW_ECR_REPO::${{ env.NEW_ECR_REPO }}"
-    - name: Create new repo in ECR
-      uses: int128/create-ecr-repository-action@v1
-      with:
-        repository: ${{ build.outputs.output1 }}
-        public: true
+  create-repo:
+    uses: int128/create-ecr-repository-action@v1
+    with:
+      repository: ${{ needs.build.outputs.output1 }}
+      public: true
