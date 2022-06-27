@@ -42,10 +42,10 @@ jobs:
       run: |
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
         ls -la
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA 
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }} .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }} 
         echo "Pushing image to ECR"
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:master-$SHORT_SHA"
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}"
         
   deploy:
     name: Deploy
@@ -71,7 +71,7 @@ jobs:
         echo "Update newimage with kustomize"
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
         cd kustomize/demoapp1
-        kustomize edit set image $ECR_REGISTRY/$ECR_REPOSITORY:main-$SHORT_SHA
+        kustomize edit set image $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
         cat kustomization.yaml
         git commit -am "[${{ github.repository }}] $GITHUB_ACTOR - ${{ github.event.head_commit.message }}"
         git push -u origin main 
