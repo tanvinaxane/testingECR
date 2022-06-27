@@ -1,12 +1,10 @@
-on:
-    push:
-      branches: [ ecrautorepo ]
-    workflow_dispatch:
-      inputs:
+on:  
+  workflow_dispatch:
+     inputs:
         NEW_ECR_REPO:
-          description: The repository name
+          description: 'The repository name'
           required: true
-          default: newecrrepo1
+          default: 'newecrrepo1'
           type: string
 env:
     ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com
@@ -16,6 +14,7 @@ name: AUTO CREATE ECR REPO IF NOT EXISTS
 jobs:
     build:
       name: Build
+      
       runs-on: ubuntu-latest
       outputs:
         output1: steps.step1.outputs.NEW_ECR_REPO
