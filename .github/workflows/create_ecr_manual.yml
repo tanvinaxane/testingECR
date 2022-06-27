@@ -1,27 +1,22 @@
+
 on:
-  workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-       NEW_ECR_REPO:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'The repository name'
-        # Default value if no value is explicitly provided
-        default: 'reponamejr1'
-        # Input has to be provided for the workflow to run
-        required: true
-#on:  
- # workflow_dispatch:
-     ##  NEW_ECR_REPO:
-        #### type: string
+    push:
+      branches: [ ecrautorepo ]
+    workflow_dispatch:
+      inputs:
+        NEW_ECR_REPO:
+          description: The repository name
+          required: true
+          default: newecrrepo1
+          type: string
 env:
     ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com
     ECR_REPOSITORY: testingdockerimage
     NEW_ECR_REPO: ${{ inputs.NEW_ECR_REPO }}
-name: AUTO CREATE ECR REPO IF NOT EXIST
+name: AUTO CREATE ECR REPO IF NOT EXISTS
 jobs:
     build:
       name: Build
-      
       runs-on: ubuntu-latest
       outputs:
         output1: steps.step1.outputs.NEW_ECR_REPO
@@ -49,4 +44,4 @@ jobs:
         uses: int128/create-ecr-repository-action@v1
         with:
           repository: ${{ steps.step1.outputs.NEW_ECR_REPO }}
-          public: true
+          public: false
