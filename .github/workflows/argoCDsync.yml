@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 env:
-  ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com 
+  ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com/
   ECR_REPOSITORY: testingdockerimage
   
 
