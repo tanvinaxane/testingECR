@@ -1,0 +1,46 @@
+on:
+    push:
+      branches: [ ecrautorepo ]
+    workflow_dispatch:
+      inputs:
+        NEW_ECR_REPO:
+          description: The repository name
+          required: true
+          default: newecrrepo1
+          type: string
+env:
+    ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com
+    ECR_REPOSITORY: testingdockerimage
+    NEW_ECR_REPO: ${{ inputs.NEW_ECR_REPO }}
+name: AUTO CREATE ECR REPO IF NOT EXISTS
+jobs:
+    build:
+      name: Build
+      runs-on: ubuntu-latest
+      outputs:
+        output1: steps.step1.outputs.NEW_ECR_REPO
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_TOKEN}}
+          aws-region: us-east-1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Validating and Creating repository
+        run: |
+            cd ./scripts/
+            chmod 777 validate.sh
+            ./validate.sh "${{ env.NEW_ECR_REPO }}"
+      - id: step1
+        run: echo "::set-output name=NEW_ECR_REPO::${{ env.NEW_ECR_REPO }}"
+      - name: Create new repo in ECR
+        uses: int128/create-ecr-repository-action@v1
+        with:
+          repository: ${{ steps.step1.outputs.NEW_ECR_REPO }}
+          public: true
