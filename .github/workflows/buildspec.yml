@@ -73,7 +73,7 @@ jobs:
         echo "Update newimage with kustomize"
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
         cd kustomize/demoapp1
-        kustomize edit set image $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
+        kustomize edit set image $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }}
         cat kustomization.yaml
         git commit -am "[${{ github.repository }}] $GITHUB_ACTOR - ${{ github.event.head_commit.message }}"
         git push -u origin main 
