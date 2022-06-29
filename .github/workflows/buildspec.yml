@@ -41,9 +41,11 @@ jobs:
         ls -la
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage -t $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod .
         docker images
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod
+        docker push -a $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage
+        docker push -a $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod
         echo "Pushing image to ECR"
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage"
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod"
         
   deploy:
     name: Deploy
