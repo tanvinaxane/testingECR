@@ -3,8 +3,8 @@ on:
     branches: [ main ]
 
 env:
-  ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com
-  ECR_REPOSITORY: testingdockerimage
+  ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com/feature2361
+  ECR_REPOSITORY: newtanvirepo
   
 name: STAGE TO PROD IMAGE REPLICATION
 
@@ -33,7 +33,7 @@ jobs:
       id: build-image
       env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: testingdockerimage
+          ECR_REPOSITORY: newtanvirepo
           IMAGE_TAG: ${{ github.sha }}
           AWS_REGION: us-east-1
       run: |
@@ -58,4 +58,4 @@ jobs:
      - name: Sync ArgoCD App
        run: |
           argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
-          echo "Replicating iamge from Stage to Prod"
+          echo "Replicating image from Stage to Prod"
