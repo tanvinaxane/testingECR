@@ -3,8 +3,8 @@ on:
     branches: [ main ]
 
 env:
-  ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com/feature2361
-  ECR_REPOSITORY: newtanvirepo
+  ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REPOSITORY: feature2361
   
 name: STAGE TO PROD IMAGE REPLICATION
 
@@ -33,7 +33,7 @@ jobs:
       id: build-image
       env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: newtanvirepo
+          ECR_REPOSITORY: feature2361
           IMAGE_TAG: ${{ github.sha }}
           AWS_REGION: us-east-1
       run: |
