@@ -37,26 +37,26 @@ jobs:
       env:
           SRC_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           SRC_ECR_REPOSITORY: testingdockerimage
-          SRC_IMAGE_TAG: ${{ github.sha }}
+          SRC_IMAGE_TAG: ${{ GITHUB_SHA }}
           SRC_AWS_REGION: us-east-1
       run: |
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
         ls -la
-        docker build -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:$SRC_IMAGE_TAG -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }} .
-        docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }}
+        docker build -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:$SRC_IMAGE_TAG -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ GITHUB_SHA }} .
+        docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ GITHUB_SHA }}
         echo "Pushing image to ECR"
-        echo "::set-output name=image::$SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }}"
+        echo "::set-output name=image::$SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ GITHUB_SHA }}"
       
     - name: Build, tag, and push image to DEST Amazon ECR Repo
       id: build-image-dest
       env:
         DEST_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         DEST_ECR_REPOSITORY: testingdockerimage
-        DEST_IMAGE_TAG: ${{ github.sha }}
+        DEST_IMAGE_TAG: ${{ GITHUB_SHA }}
         DEST_AWS_REGION: us-east-1
       run: |
-        docker push $DEST_ECR_REGISTRY/$DEST_ECR_REPOSITORY:${{ github.sha }} 
-        echo "::set-output name=image::$DEST_ECR_REGISTRY/$DEST_ECR_REPOSITORY:${{ github.sha }}"
+        docker push $DEST_ECR_REGISTRY/$DEST_ECR_REPOSITORY:${{ GITHUB_SHA}} 
+        echo "::set-output name=image::$DEST_ECR_REGISTRY/$DEST_ECR_REPOSITORY:${{ GITHUB_SHA }}"
 
         
   deploy:
