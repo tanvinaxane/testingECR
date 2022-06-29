@@ -37,14 +37,9 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           AWS_REGION: us-east-1
       run: |
-        echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" 
-        ls -la
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage -t $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod .
-        docker push --disable-content-trust $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage
-        docker push --disable-content-trust $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod
-        echo "Pushing image to ECR"
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage"
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod"
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:stage -t $ECR_REGISTRY/$ECR_REPOSITORY:prod.
+        docker push -a $ECR_REGISTRY/$ECR_REPOSITORY 
+        echo "Pushing image to ECR "
         
   deploy:
     name: Deploy
