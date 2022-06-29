@@ -32,7 +32,7 @@ jobs:
     - name: Build, tag, and push image to SRC Amazon ECR Repo
       id: build-image
       env:
-          ECR_REGISTRY: "https://244740641779.dkr.ecr.us-east-1.amazonaws.com"
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: feature2361
           IMAGE_TAG: ${{ github.sha }}
           AWS_REGION: us-east-1
