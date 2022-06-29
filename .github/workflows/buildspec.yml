@@ -44,7 +44,8 @@ jobs:
         docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage
         docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod
         echo "Pushing image to ECR"
-        echo "::set-output name=image::$SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }}"
+        echo "::set-output name=image::$SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage"
+        echo "::set-output name=image::$SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod"
         
   deploy:
     name: Deploy
