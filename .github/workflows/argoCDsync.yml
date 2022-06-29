@@ -79,4 +79,4 @@ jobs:
     - name: Sync ArgoCD App
       run: |
         argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
-        echo "testing sync1"
+        echo "testing sync"
