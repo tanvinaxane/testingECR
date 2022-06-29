@@ -37,7 +37,7 @@ jobs:
           SRC_IMAGE_TAG: ${{ github.sha }}
           SRC_AWS_REGION: us-east-1
       run: |
-        echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+        echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" 
         ls -la
         docker build -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod .
         docker images
