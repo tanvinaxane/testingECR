@@ -38,7 +38,7 @@ jobs:
           SRC_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           SRC_ECR_REPOSITORY: testingdockerimage
           SRC_IMAGE_TAG: ${{ github.sha }}
-          AWS_REGION: us-east-1
+          SRC_AWS_REGION: us-east-1
       run: |
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
         ls -la
@@ -53,7 +53,7 @@ jobs:
         DEST_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         DEST_ECR_REPOSITORY: testingdockerimage
         DEST_IMAGE_TAG: ${{ github.sha }}
-        AWS_REGION: us-east-1
+        DEST_AWS_REGION: us-east-1
       run: |
         docker push $DEST_ECR_REGISTRY/$DEST_ECR_REPOSITORY:${{ github.sha }} 
         echo "::set-output name=image::$DEST_ECR_REGISTRY/$DEST_ECR_REPOSITORY:${{ github.sha }}"
