@@ -37,7 +37,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           AWS_REGION: us-east-1
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:stage -t $ECR_REGISTRY/$ECR_REPOSITORY:prod.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:stage -t $ECR_REGISTRY/$ECR_REPOSITORY:prod .
         docker push -a $ECR_REGISTRY/$ECR_REPOSITORY 
         echo "Pushing image to ECR "
         
