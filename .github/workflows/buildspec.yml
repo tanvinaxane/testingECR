@@ -3,7 +3,7 @@ on:
     branches: [ main ]
 
 env:
-  ECR_REGISTRY: http://244740641779.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com
   ECR_REPOSITORY: feature2361
   
 name: STAGE TO PROD IMAGE REPLICATION
@@ -22,7 +22,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-session-token: ${{ secrets.AWS_TOKEN}}
+        aws-session-token: ${{ secrets.AWS_TOKEN }}
         aws-region: us-east-1
 
     - name: Login to Amazon ECR
@@ -32,7 +32,7 @@ jobs:
     - name: Build, tag, and push image to SRC Amazon ECR Repo
       id: build-image
       env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com
           ECR_REPOSITORY: feature2361
           IMAGE_TAG: ${{ github.sha }}
           AWS_REGION: us-east-1
