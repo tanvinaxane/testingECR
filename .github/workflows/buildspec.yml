@@ -53,4 +53,4 @@ jobs:
      - name: Sync ArgoCD App
        run: |
           argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
-          echo "Replicating image from Stage to Prod"
+          echo "Replicating image from Stage to Prod."
