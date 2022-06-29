@@ -3,8 +3,8 @@ on:
     branches: [ main ]
 
 env:
-  SRC_ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com/
-  SRC_ECR_REPOSITORY: testingdockerimage
+  ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REPOSITORY: testingdockerimage
   
 name: STAGE TO PROD IMAGE REPLICATION
 
@@ -32,20 +32,20 @@ jobs:
     - name: Build, tag, and push image to SRC Amazon ECR Repo
       id: build-image-src
       env:
-          SRC_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          SRC_ECR_REPOSITORY: testingdockerimage
-          SRC_IMAGE_TAG: ${{ github.sha }}
-          SRC_AWS_REGION: us-east-1
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: testingdockerimage
+          IMAGE_TAG: ${{ github.sha }}
+          AWS_REGION: us-east-1
       run: |
         echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" 
         ls -la
-        docker build -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage -t $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod .
         docker images
-        docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage
-        docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod
         echo "Pushing image to ECR"
-        echo "::set-output name=image::$SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage"
-        echo "::set-output name=image::$SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod"
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:stage"
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_TAG:prod"
         
   deploy:
     name: Deploy
