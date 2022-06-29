@@ -40,7 +40,8 @@ jobs:
         echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
         ls -la
         docker build -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod .
-        docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage | $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod 
+        docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage
+        docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod 
         echo "Pushing image to ECR"
         echo "::set-output name=image::$SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }}"
         
