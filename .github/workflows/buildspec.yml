@@ -5,10 +5,7 @@ on:
 env:
   SRC_ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com/
   SRC_ECR_REPOSITORY: testingdockerimage
-  DEST_ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com/
-  DEST_ECR_REPOSITORY: newtanvirepo
   
-
 name: STAGE TO PROD IMAGE REPLICATION
 
 jobs:
@@ -42,53 +39,21 @@ jobs:
       run: |
         echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
         ls -la
-        docker build -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:$SRC_IMAGE_TAG -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }} .
-        docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }}
+        docker build -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:stage -t $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG:prod .
+        docker push $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY/$SRC_IMAGE_TAG --all-tags
         echo "Pushing image to ECR"
         echo "::set-output name=image::$SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }}"
-      
-    - name: Build, tag, and push image to DEST Amazon ECR Repo
-      id: build-image-dest
-      env:
-        DEST_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        DEST_ECR_REPOSITORY: testingdockerimage
-        DEST_IMAGE_TAG: ${{ github.sha }}
-        DEST_AWS_REGION: us-east-1
-      run: |
-        docker push $DEST_ECR_REGISTRY/$DEST_ECR_REPOSITORY:${{ github.sha }} 
-        echo "::set-output name=image::$DEST_ECR_REGISTRY/$DEST_ECR_REPOSITORY:${{ github.sha}}"
-
         
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     needs: build
-
+  
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+     - name: Check out code
+       uses: actions/checkout@v2
 
-    - name: Setup Kustomize
-      uses: imranismail/setup-kustomize@v1
-      with:
-        kustomize-version: "3.8.8"
-
-    - name: Update Kubernetes resources
-      run: |
-        cd ~/k8s-eks-manifest
-        git pull
-        git config --global user.email ${GITHUB_EMAIL}
-        git config --global user.name ${GITHUB_USERNAME}
-        git checkout main
-        echo "Update newimage with kustomize"
-        SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
-        cd kustomize/demoapp1
-        kustomize edit set image $SRC_ECR_REGISTRY/$SRC_ECR_REPOSITORY:${{ github.sha }}
-        cat kustomization.yaml
-        git commit -am "[${{ github.repository }}] $GITHUB_ACTOR - ${{ github.event.head_commit.message }}"
-        git push -u origin main 
-        
-    - name: Sync ArgoCD App
-      run: |
-        argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
-        echo "Replicating iamge from Stage to Prod"
+     - name: Sync ArgoCD App
+       run: |
+          argocd --insecure app sync ${{ secrets.ARGOCD_TOKEN }}
+          echo "Replicating iamge from Stage to Prod"
