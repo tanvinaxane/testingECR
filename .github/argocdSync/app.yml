@@ -8,7 +8,7 @@ spec:
     namespace: 'newstageprod'
     server: 'https://C7670FF6497552BFBC7284EBD87B1B2F.gr7.us-east-1.eks.amazonaws.com'
   source:
-    path: '/'
+    path: './'
     repoURL: 'https://github.com/tanvinaxane/testingECR.git'
     targetRevision: main
   project: newstageprodproject
