@@ -50,6 +50,12 @@ jobs:
      - name: Check out code
        uses: actions/checkout@v2
        
+     - name: Login to your cluster
+       uses: zachguo/setup-eks-kubectl@v1
+       with:
+          cluster: MetronetPocArgocd    # name of your EKS cluster
+          region: us-east-1             # region of your cluster
+      
      - name: Sync app to ArgoCD Application
        uses: safe2008/argocd-app-actions@main
        with:
