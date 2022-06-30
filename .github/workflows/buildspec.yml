@@ -64,7 +64,7 @@ jobs:
           echo "Connected to your cluster!"
       
      - name: Sync app to ArgoCD Application
-       uses: microsoft/variable-substitution@v1 
+       uses: safe2008/argocd-app-actions@main 
        with:
         files: './argocdSync/app.yml' 
        # address: "a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
