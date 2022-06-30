@@ -59,7 +59,7 @@ jobs:
          aws-region: us-east-1
       
      - name: Connect to your cluster
-       run:
+       run: |
           aws eks --region us-east-1 update-kubeconfig --name MetronetPocArgocd
           echo "Connected to your cluster!"
       
