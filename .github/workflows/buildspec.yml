@@ -61,7 +61,7 @@ jobs:
      - name: Connect to your cluster
        run: |
           aws eks --region us-east-1 update-kubeconfig --name MetronetPocArgocd
-          echo "Connected to your cluster!"
+          echo "Connected to your cluster"
       
      - name: Sync app to ArgoCD Application
        uses: safe2008/argocd-app-actions@main
