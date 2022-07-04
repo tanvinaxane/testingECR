@@ -3,7 +3,8 @@ on:
     branches: [ main ]
 
 env:
-  ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com
+  #ECR_REGISTRY: https://244740641779.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REGISTRY: public.ecr.aws/l5x2y1m2/sushruthtest2022
   ECR_REPOSITORY: feature2361
   
 name: STAGE TO PROD IMAGE REPLICATION
