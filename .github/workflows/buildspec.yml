@@ -67,7 +67,7 @@ jobs:
        uses: gnat-service/argocd-action@v1.0.2
        with:
         files: 'argocdSync/app.yml' 
-        address: "a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
+        address: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
         token: ${{ secrets.ARGOCD_TOKEN }}
         insecure: true
         appName: "newstageprodapp"
