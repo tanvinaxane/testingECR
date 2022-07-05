@@ -62,12 +62,28 @@ jobs:
        run: |
           aws eks --region us-east-1 update-kubeconfig --name MetronetPocArgocd
           echo "Connected to your cluster"
+      
+     - name: Install and configure ArgoCD
+       uses: inarix/ga-argocd-action@v1
+       with:
+          argocdToken: ${{secrets.ARGOCD_TOKEN}}
+          argocdEndpoint: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
+          insecure: true
+          argocdApplicationNamespace: "stagetoprodst"
+          destClusterName: "MetronetPocArgocd"
+          applicationName: "web2"
+          helmChartName: "nginx"
+          helmChartVersion: "9.7.0"
+          helmRepoUrl: "https://charts.bitnami.com/bitnami"
+          actionName: "create"
+          applicationParams: "image.debug=true;replicaCount=1;nodeSelector.name=node1"
+          applicationValueFiles: "values.yaml;values-staging.yaml"
           
-     - name: Deploy app to cluster and sync to ArgoCD
-       run: |
-          argocd login  a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com --username admin --password WIoTYBjjxXf1bCt4
-          argocd app create web2 --repo https://github.com/tanvinaxane/testingECR.git --path "." --project ecrtesting1 --dest-server https://C7670FF6497552BFBC7284EBD87B1B2F.gr7.us-east-1.eks.amazonaws.com --dest-namespace stagetoprodst
-          argocd app sync web2
+    # - name: Deploy app to cluster and sync to ArgoCD
+     #  run: |
+      #    argocd login  a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com --username admin --password WIoTYBjjxXf1bCt4
+       #   argocd app create web2 --repo https://github.com/tanvinaxane/testingECR.git --path "." --project ecrtesting1 --dest-server https://C7670FF6497552BFBC7284EBD87B1B2F.gr7.us-east-1.eks.amazonaws.com --dest-namespace stagetoprodst
+        #  argocd app sync web2
       
       
     # - name: Sync app to ArgoCD Application
