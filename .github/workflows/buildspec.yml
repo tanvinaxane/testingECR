@@ -71,11 +71,12 @@ jobs:
         #  argocd app sync web2
       
      - name: Sync app to ArgoCD Application
-       uses: gnat-service/argocd-action@v1.0.2
+       uses: butterfly1924/argocd-actions@master
        with:
         #files: 'argocdSync/app.yml' 
         address: "http://a867a311ffe544ac885bb44c65c553b2-230721572.us-east-1.elb.amazonaws.com"
         token: ${{ secrets.ARGOCD_TOKEN }}
         insecure: true
         appName: "web"
+        imageTag: "stage"
         
