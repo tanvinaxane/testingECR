@@ -67,7 +67,7 @@ jobs:
        uses: inarix/ga-argocd-action@v1
        with:
           argocdToken: ${{secrets.ARGOCD_TOKEN}}
-          argocdEndpoint: "http://a867a311ffe544ac885bb44c65c553b2-70831757.us-east-1.elb.amazonaws.com"
+          argocdEndpoint: "http://a867a311ffe544ac885bb44c65c553b2-230721572.us-east-1.elb.amazonaws.com"
           insecure: true
           argocdApplicationNamespace: "stagetoprodst"
           destClusterName: "MetronetPocArgocd"
