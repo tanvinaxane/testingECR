@@ -39,7 +39,7 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:stage -t $ECR_REGISTRY/$ECR_REPOSITORY:prod .
         docker push -a $ECR_REGISTRY/$ECR_REPOSITORY 
-        echo "Pushing image to ECR repo."
+        echo "Pushing image to ECR repo"
         
   deploy:
     name: Deploy
