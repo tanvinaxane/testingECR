@@ -76,7 +76,7 @@ jobs:
         #files: 'argocdSync/app.yml' 
         address: "a867a311ffe544ac885bb44c65c553b2-230721572.us-east-1.elb.amazonaws.com"
         token: ${{ secrets.ARGOCD_TOKEN }}
-        insecure: true
+        insecure: "true"
         appName: "web"
         imageTag: "stage"
         
