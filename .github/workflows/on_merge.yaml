@@ -20,19 +20,19 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-session-token: ${{ secrets.AWS_TOKEN}} 
-        aws-region: us-east-1
+        aws-region: ${{ secrets.AWS_REGION }} 
         
     - name: Setup EKS Kubectl
       uses: zachguo/setup-eks-kubectl@v1
       with:
         cluster: metronetpocmulticluster # name of your EKS cluster
-        region: us-east-1 # region of your EKS cluster
+        region: ${{ secrets.AWS_REGION }}  # region of your EKS cluster
         namespace: argocddemonew2 # optional namespace context, default value is 'default'
   
     - name: Connect to your cluster
       run: |
-        aws eks --region us-east-1 update-kubeconfig --name metronetpocmulticluster
-        kubectl delete namespace argocddemonew2
+        aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name metronetpocmulticluster
+        echo "Cluster says HI"
         
         
     
