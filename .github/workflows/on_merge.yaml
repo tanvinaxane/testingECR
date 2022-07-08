@@ -3,6 +3,13 @@ name: AUTO DELETION OF APPS ON MERGE
 on:
   push: 
     branches: [demo] 
+  workflow_dispatch:
+      inputs:
+        ON_MERGE:
+          description: ENTER YOUR NAME
+          required: true
+          default: metronet
+          type: string
 
 jobs:
 
