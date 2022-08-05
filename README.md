@@ -1,5 +1,5 @@
 # kubernetes-deploy-tutorial
-This code is made for my youtube channel and corresponding to video given below.
+This code is made for my youtube channel and corresponding to video given below
 
 
 <p align="center"> 
